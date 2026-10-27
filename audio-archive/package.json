@@ -1,0 +1,23 @@
+{
+  "name": "@gainforest-infra/audio-archive",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "archive": "node --env-file-if-exists=.env src/cli.ts run",
+    "plan": "node --env-file-if-exists=.env src/cli.ts run --dry-run",
+    "copy-one": "node --env-file-if-exists=.env src/cli.ts copy-one",
+    "test": "node --test 'src/**/*.test.ts'",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1156.0",
+    "@aws-sdk/lib-storage": "^3.1156.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}

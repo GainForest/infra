@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Replace __DIR__ with the absolute path of this package and __NODE__ with the output of `node -p process.execPath`. See README. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>app.gainforest.audio-archive</string>
+  <key>WorkingDirectory</key>
+  <string>__DIR__</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__NODE__</string>
+    <string>--env-file-if-exists=.env</string>
+    <string>src/cli.ts</string>
+    <string>run</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>3600</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <!-- Stopping the job sends SIGTERM. This is how long the runner gets to cancel an
+       upload in flight before launchd sends SIGKILL (the default is about 20 seconds). -->
+  <key>ExitTimeOut</key>
+  <integer>120</integer>
+  <key>StandardOutPath</key>
+  <string>__DIR__/logs/audio-archive.log</string>
+  <key>StandardErrorPath</key>
+  <string>__DIR__/logs/audio-archive.log</string>
+</dict>
+</plist>
