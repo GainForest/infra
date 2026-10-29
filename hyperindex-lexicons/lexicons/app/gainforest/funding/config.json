@@ -1,0 +1,84 @@
+{
+  "id": "app.gainforest.funding.config",
+  "defs": {
+    "main": {
+      "key": "any",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "receivingWallet",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "maxLength": 20,
+            "description": "The current status of the listing. Defaults to 'open'.",
+            "knownValues": [
+              "coming-soon",
+              "open",
+              "paused",
+              "closed"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this record was originally created."
+          },
+          "goalInUSD": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "An optional field to set a fundraising goal in USD (e.g. '1000.50')."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this record was last updated."
+          },
+          "allowOversell": {
+            "type": "boolean",
+            "default": true,
+            "description": "An optional field to determine if donations are accepted post the goal reach. Defaults to true (overselling is allowed)."
+          },
+          "receivingWallet": {
+            "refs": [
+              "#evmLinkRef"
+            ],
+            "type": "union",
+            "description": "Reference to the wallet link record where funds should be received. Open union to support future wallet types (e.g. Solana, Cosmos)."
+          },
+          "maxDonationInUSD": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Optional maximum donation amount in USD (e.g. '10000.00'). Donations above this amount will be rejected."
+          },
+          "minDonationInUSD": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Optional minimum donation amount in USD (e.g. '1.00'). Donations below this amount will be rejected."
+          }
+        }
+      },
+      "description": "The funding / donations configuration for a given bumicert."
+    },
+    "evmLinkRef": {
+      "type": "object",
+      "required": [
+        "uri"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the app.gainforest.link.evm record."
+        }
+      },
+      "description": "Reference to an EVM wallet link record (app.gainforest.link.evm)."
+    }
+  },
+  "lexicon": 1,
+  "description": "A record that represents the funding / donations configuration for a given bumicert. It shares the same rkey as the claim.activity (bumicert) record."
+}

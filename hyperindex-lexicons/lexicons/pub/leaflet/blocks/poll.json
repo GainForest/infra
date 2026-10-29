@@ -1,0 +1,18 @@
+{
+  "id": "pub.leaflet.blocks.poll",
+  "defs": {
+    "main": {
+      "type": "object",
+      "required": [
+        "pollRef"
+      ],
+      "properties": {
+        "pollRef": {
+          "ref": "com.atproto.repo.strongRef",
+          "type": "ref"
+        }
+      }
+    }
+  },
+  "lexicon": 1
+}

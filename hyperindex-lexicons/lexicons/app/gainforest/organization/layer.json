@@ -1,0 +1,192 @@
+{
+  "id": "app.gainforest.organization.layer",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "uri",
+          "createdAt"
+        ],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URI of the layer",
+            "maxGraphemes": 2048
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the site",
+            "maxGraphemes": 256
+          },
+          "type": {
+            "enum": [
+              "geojson_points",
+              "geojson_points_trees",
+              "geojson_line",
+              "choropleth",
+              "choropleth_shannon",
+              "raster_tif",
+              "tms_tile",
+              "heatmap",
+              "contour",
+              "satellite_overlay"
+            ],
+            "type": "string",
+            "description": "The type of the layer",
+            "maxGraphemes": 64
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measurement for the layer data (e.g., 'species/ha', 'kg C/m²', 'mm/year')",
+            "maxGraphemes": 64
+          },
+          "bounds": {
+            "type": "string",
+            "description": "Bounding box as 'west,south,east,north'",
+            "maxGraphemes": 128
+          },
+          "legend": {
+            "type": "array",
+            "items": {
+              "ref": "#legendEntry",
+              "type": "ref"
+            },
+            "maxLength": 20,
+            "description": "Legend entries for the layer"
+          },
+          "opacity": {
+            "type": "string",
+            "description": "Default opacity (0-1 as string, e.g., '0.7')",
+            "maxGraphemes": 8
+          },
+          "siteRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI reference to the site this layer belongs to"
+          },
+          "category": {
+            "type": "string",
+            "description": "Layer category for grouping in UI (e.g., 'Biodiversity', 'Land Cover', 'Climate', 'Infrastructure')",
+            "maxGraphemes": 128
+          },
+          "dataDate": {
+            "type": "string",
+            "description": "Date of the data (ISO 8601)",
+            "maxGraphemes": 64
+          },
+          "maxValue": {
+            "type": "string",
+            "description": "Maximum value in the data range",
+            "maxGraphemes": 32
+          },
+          "minValue": {
+            "type": "string",
+            "description": "Minimum value in the data range",
+            "maxGraphemes": 32
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "The date and time of the creation of the record"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "description": "Whether this layer should be shown by default"
+          },
+          "thumbnail": {
+            "ref": "app.gainforest.common.defs#imageThumbnail",
+            "type": "ref",
+            "description": "Preview thumbnail for the layer"
+          },
+          "colorScale": {
+            "type": "string",
+            "description": "Named color scale for continuous data",
+            "knownValues": [
+              "viridis",
+              "plasma",
+              "inferno",
+              "magma",
+              "cividis",
+              "turbo",
+              "spectral",
+              "rdylgn",
+              "rdylbu",
+              "custom"
+            ],
+            "maxGraphemes": 64
+          },
+          "dataSource": {
+            "type": "string",
+            "description": "Attribution/source of the layer data",
+            "maxGraphemes": 512
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the layer",
+            "maxGraphemes": 2048
+          },
+          "propertyKey": {
+            "type": "string",
+            "description": "GeoJSON property key to use for choropleth coloring (e.g., 'species_richness')",
+            "maxGraphemes": 128
+          },
+          "tileMaxZoom": {
+            "type": "integer",
+            "maximum": 22,
+            "minimum": 0,
+            "description": "Maximum zoom level"
+          },
+          "tileMinZoom": {
+            "type": "integer",
+            "maximum": 22,
+            "minimum": 0,
+            "description": "Minimum zoom level"
+          },
+          "tilePattern": {
+            "type": "string",
+            "description": "URL pattern for TMS tiles (e.g., 'https://tiles.example.com/{z}/{x}/{y}.png')",
+            "maxGraphemes": 512
+          },
+          "displayOrder": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Ordering priority for display"
+          }
+        }
+      },
+      "description": "A declaration of a layer for an organization"
+    },
+    "legendEntry": {
+      "type": "object",
+      "required": [
+        "label",
+        "color"
+      ],
+      "properties": {
+        "color": {
+          "type": "string",
+          "description": "Color for this legend entry (e.g., '#FF5733')",
+          "maxGraphemes": 16
+        },
+        "label": {
+          "type": "string",
+          "description": "Display label for this legend entry",
+          "maxGraphemes": 128
+        },
+        "value": {
+          "type": "string",
+          "description": "Optional value associated with this legend entry",
+          "maxGraphemes": 64
+        }
+      },
+      "description": "A single entry in a layer legend"
+    }
+  },
+  "lexicon": 1
+}

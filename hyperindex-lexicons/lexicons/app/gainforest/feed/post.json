@@ -1,0 +1,96 @@
+{
+  "id": "app.gainforest.feed.post",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "text",
+          "createdAt"
+        ],
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 640,
+              "maxGraphemes": 64
+            },
+            "maxLength": 8,
+            "description": "Additional hashtags, in addition to any included in post text and facets."
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 3000,
+            "description": "The primary post content. May be an empty string, if there are embeds.",
+            "maxGraphemes": 300
+          },
+          "embed": {
+            "refs": [
+              "app.bsky.embed.images",
+              "app.bsky.embed.video",
+              "app.bsky.embed.external",
+              "app.bsky.embed.record",
+              "app.bsky.embed.recordWithMedia"
+            ],
+            "type": "union"
+          },
+          "langs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "language"
+            },
+            "maxLength": 3,
+            "description": "Indicates human language of post primary text content."
+          },
+          "reply": {
+            "ref": "#replyRef",
+            "type": "ref"
+          },
+          "facets": {
+            "type": "array",
+            "items": {
+              "ref": "app.bsky.richtext.facet",
+              "type": "ref"
+            },
+            "description": "Annotations of text (mentions, URLs, hashtags, etc)."
+          },
+          "labels": {
+            "refs": [
+              "com.atproto.label.defs#selfLabels"
+            ],
+            "type": "union",
+            "description": "Self-label values for this post. Effectively content warnings."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this post was originally created."
+          }
+        }
+      },
+      "description": "Record containing a GainForest feed post. A faithful port of app.bsky.feed.post into the app.gainforest.feed namespace. A reply (i.e. a 'comment') is a post that carries a `reply` ref; because that ref uses com.atproto.repo.strongRef, the GainForest appview can honour replies whose parent/root is ANY record in the commons (an observation, project, cert, organization, or donation), not only another post. Deprecated `entities`/`textSlice` fields from the Bluesky source were omitted in favour of `facets`."
+    },
+    "replyRef": {
+      "type": "object",
+      "required": [
+        "root",
+        "parent"
+      ],
+      "properties": {
+        "root": {
+          "ref": "com.atproto.repo.strongRef",
+          "type": "ref"
+        },
+        "parent": {
+          "ref": "com.atproto.repo.strongRef",
+          "type": "ref"
+        }
+      }
+    }
+  },
+  "lexicon": 1
+}

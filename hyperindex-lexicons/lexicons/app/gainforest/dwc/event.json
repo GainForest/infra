@@ -1,0 +1,256 @@
+{
+  "id": "app.gainforest.dwc.event",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "eventID",
+          "eventDate",
+          "createdAt"
+        ],
+        "properties": {
+          "county": {
+            "type": "string",
+            "description": "Second-level administrative division.",
+            "maxGraphemes": 256
+          },
+          "country": {
+            "type": "string",
+            "description": "The name of the country.",
+            "maxGraphemes": 128
+          },
+          "eventID": {
+            "type": "string",
+            "description": "An identifier for the event. Should be globally unique or unique within the dataset.",
+            "maxGraphemes": 256
+          },
+          "habitat": {
+            "type": "string",
+            "description": "A category or description of the habitat in which the event occurred (e.g., 'primary tropical rainforest', 'degraded pasture', 'riparian zone').",
+            "maxGraphemes": 512
+          },
+          "siteRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI reference to the organization site record."
+          },
+          "humidity": {
+            "type": "string",
+            "description": "Relative humidity percentage.",
+            "maxGraphemes": 16
+          },
+          "locality": {
+            "type": "string",
+            "description": "Specific locality description.",
+            "maxGraphemes": 1024
+          },
+          "teamSize": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Number of people involved in the event."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Timestamp of record creation in the ATProto PDS."
+          },
+          "eventDate": {
+            "type": "string",
+            "description": "The date or date range during which the event occurred. ISO 8601 format (e.g., '2024-03-15', '2024-03-15/2024-03-17').",
+            "maxGraphemes": 64
+          },
+          "eventTime": {
+            "type": "string",
+            "description": "The time or time range during which the event occurred. ISO 8601 format (e.g., '06:30:00', '06:30:00/09:00:00').",
+            "maxGraphemes": 64
+          },
+          "moonPhase": {
+            "type": "string",
+            "description": "Moon phase (relevant for nocturnal surveys).",
+            "maxGraphemes": 32
+          },
+          "windSpeed": {
+            "type": "string",
+            "description": "Wind speed during event.",
+            "maxGraphemes": 16
+          },
+          "cloudCover": {
+            "type": "string",
+            "description": "Cloud cover percentage.",
+            "maxGraphemes": 16
+          },
+          "fieldNotes": {
+            "type": "string",
+            "description": "Notes or a reference to notes taken in the field about the event.",
+            "maxGraphemes": 10000
+          },
+          "locationID": {
+            "type": "string",
+            "description": "Identifier for the location where the event occurred.",
+            "maxGraphemes": 256
+          },
+          "projectRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI reference to the organization info record."
+          },
+          "recordedBy": {
+            "type": "string",
+            "description": "Person(s) who conducted the event. Pipe-delimited for multiple people (e.g., 'Jane Smith | John Doe').",
+            "maxGraphemes": 512
+          },
+          "visibility": {
+            "type": "string",
+            "description": "Visibility conditions (e.g., 'clear', 'foggy', '10m underwater').",
+            "maxGraphemes": 32
+          },
+          "waterLevel": {
+            "type": "string",
+            "description": "Water level if aquatic survey (e.g., 'low', '2.3m').",
+            "maxGraphemes": 32
+          },
+          "countryCode": {
+            "type": "string",
+            "maxLength": 2,
+            "minLength": 2,
+            "description": "ISO 3166-1 alpha-2 country code."
+          },
+          "temperature": {
+            "type": "string",
+            "description": "Temperature in Celsius during event.",
+            "maxGraphemes": 16
+          },
+          "completeness": {
+            "type": "string",
+            "description": "Assessment of survey completeness (e.g., 'complete', 'partial - rain stopped survey', 'incomplete').",
+            "maxGraphemes": 64
+          },
+          "eventRemarks": {
+            "type": "string",
+            "description": "Comments or notes about the event.",
+            "maxGraphemes": 5000
+          },
+          "municipality": {
+            "type": "string",
+            "description": "Third-level administrative division.",
+            "maxGraphemes": 256
+          },
+          "recordedByID": {
+            "type": "string",
+            "description": "ORCID or other persistent identifiers for the recorder(s). Pipe-delimited for multiple IDs.",
+            "maxGraphemes": 512
+          },
+          "equipmentUsed": {
+            "type": "string",
+            "description": "Description of equipment used during the event.",
+            "maxGraphemes": 1024
+          },
+          "geodeticDatum": {
+            "type": "string",
+            "description": "The spatial reference system. Recommended: 'EPSG:4326'.",
+            "maxGraphemes": 64
+          },
+          "parentEventID": {
+            "type": "string",
+            "description": "An identifier for the broader event that this event is part of (e.g., a survey campaign that contains multiple transects).",
+            "maxGraphemes": 256
+          },
+          "precipitation": {
+            "type": "string",
+            "description": "Precipitation description (e.g., 'none', 'light rain', '5mm').",
+            "maxGraphemes": 32
+          },
+          "stateProvince": {
+            "type": "string",
+            "description": "First-level administrative division.",
+            "maxGraphemes": 256
+          },
+          "parentEventRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI reference to the parent app.gainforest.dwc.event record."
+          },
+          "sampleSizeUnit": {
+            "type": "string",
+            "description": "The unit of measurement for the sampleSizeValue (e.g., 'square meters', 'hectares', 'trap-nights').",
+            "maxGraphemes": 128
+          },
+          "samplingEffort": {
+            "type": "string",
+            "description": "The amount of effort expended during the event (e.g., '3 person-hours', '14 trap-nights', '2 km transect walked').",
+            "maxGraphemes": 256
+          },
+          "weatherRemarks": {
+            "type": "string",
+            "description": "General weather description.",
+            "maxGraphemes": 512
+          },
+          "decimalLatitude": {
+            "type": "string",
+            "description": "Geographic latitude in decimal degrees (WGS84). Range: -90 to 90.",
+            "maxGraphemes": 32
+          },
+          "locationRemarks": {
+            "type": "string",
+            "description": "Comments about the location.",
+            "maxGraphemes": 2048
+          },
+          "sampleSizeValue": {
+            "type": "string",
+            "description": "A numeric value for a measurement of the size of a sample in the event (e.g., '20', '0.25').",
+            "maxGraphemes": 64
+          },
+          "decimalLongitude": {
+            "type": "string",
+            "description": "Geographic longitude in decimal degrees (WGS84). Range: -180 to 180.",
+            "maxGraphemes": 32
+          },
+          "samplingProtocol": {
+            "type": "string",
+            "description": "The names of, references to, or descriptions of the methods used during the event (e.g., 'camera trap array', 'line transect distance sampling', 'audio point count 10-min').",
+            "maxGraphemes": 1024
+          },
+          "waterTemperature": {
+            "type": "string",
+            "description": "Water temperature in Celsius.",
+            "maxGraphemes": 16
+          },
+          "monitoringFrequency": {
+            "type": "string",
+            "description": "How often this type of event recurs (e.g., 'monthly', 'quarterly', 'annual', 'one-time').",
+            "maxGraphemes": 64
+          },
+          "monitoringProgramme": {
+            "type": "string",
+            "description": "Name of the monitoring programme (e.g., 'Annual Biodiversity Survey 2025').",
+            "maxGraphemes": 256
+          },
+          "qualityControlNotes": {
+            "type": "string",
+            "description": "Notes on data quality issues encountered during or after the event.",
+            "maxGraphemes": 2048
+          },
+          "maximumElevationInMeters": {
+            "type": "integer",
+            "description": "Upper limit of elevation range in meters above sea level."
+          },
+          "minimumElevationInMeters": {
+            "type": "integer",
+            "description": "Lower limit of elevation range in meters above sea level."
+          },
+          "coordinateUncertaintyInMeters": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Uncertainty radius in meters around the coordinates."
+          }
+        }
+      },
+      "description": "A sampling or collecting event. Multiple dwc.occurrence records can reference the same event via eventRef, sharing location and protocol metadata."
+    }
+  },
+  "lexicon": 1,
+  "description": "A sampling event record aligned with Darwin Core Event class. Enables star-schema pattern where multiple occurrences reference a shared event context (location, protocol, effort)."
+}

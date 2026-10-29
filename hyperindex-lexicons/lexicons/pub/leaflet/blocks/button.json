@@ -1,0 +1,22 @@
+{
+  "id": "pub.leaflet.blocks.button",
+  "defs": {
+    "main": {
+      "type": "object",
+      "required": [
+        "text",
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "lexicon": 1
+}

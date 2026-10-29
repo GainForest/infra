@@ -1,0 +1,33 @@
+{
+  "id": "app.gainforest.feed.like",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "subject",
+          "createdAt"
+        ],
+        "properties": {
+          "via": {
+            "ref": "com.atproto.repo.strongRef",
+            "type": "ref",
+            "description": "A reference to the repost (or other surfacing record) through which the actor encountered the subject."
+          },
+          "subject": {
+            "ref": "com.atproto.repo.strongRef",
+            "type": "ref"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      },
+      "description": "Record declaring a 'like' of a piece of subject content. A faithful port of app.bsky.feed.like into the app.gainforest.feed namespace. `subject` is a com.atproto.repo.strongRef (uri + cid), so a like can target any record in the GainForest commons — an observation, project, cert, organization, donation, post, or comment — and the GainForest appview decides which subject types to aggregate. Unlike = delete this record."
+    }
+  },
+  "lexicon": 1
+}

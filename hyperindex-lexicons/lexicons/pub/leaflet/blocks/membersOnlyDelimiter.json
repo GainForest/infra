@@ -1,0 +1,31 @@
+{
+  "id": "pub.leaflet.blocks.membersOnlyDelimiter",
+  "defs": {
+    "main": {
+      "type": "object",
+      "required": [
+        "audience"
+      ],
+      "properties": {
+        "tierIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Paid tier ids that grant access when audience is tiers. An empty selection grants no membership access."
+        },
+        "audience": {
+          "type": "string",
+          "description": "Whether access is available to all subscribers, all paid members, or selected paid tiers.",
+          "knownValues": [
+            "subscribers",
+            "paid",
+            "tiers"
+          ]
+        }
+      },
+      "description": "Marks where members-only content begins and declares which publication members can read past it."
+    }
+  },
+  "lexicon": 1
+}

@@ -1,0 +1,133 @@
+{
+  "id": "app.certified.actor.organization",
+  "defs": {
+    "main": {
+      "key": "literal:self",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "createdAt"
+        ],
+        "properties": {
+          "logo": {
+            "refs": [
+              "org.hypercerts.defs#uri",
+              "org.hypercerts.defs#smallImage"
+            ],
+            "type": "union",
+            "description": "The organization's full logo: a wordmark, or a combination mark pairing the symbol with the name. Used where the logo appears without the name beside it, such as partner listings or badge displays. Prefer a horizontal image with a transparent background (PNG or WebP). The square symbol alone (brandmark) belongs in app.certified.actor.profile avatar, which is cropped to a square or circle."
+          },
+          "urls": {
+            "type": "array",
+            "items": {
+              "ref": "#urlItem",
+              "type": "ref"
+            },
+            "description": "Additional reference URLs, each with a display label: social media profiles, contact pages, donation links, and similar. The organization's main website belongs in app.certified.actor.profile website, not here."
+          },
+          "langs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "language"
+            },
+            "maxLength": 3,
+            "description": "Human language(s) of this record's text fields, as BCP-47 language tags (e.g. 'es', 'pt-BR'); up to three for mixed-language text. Set by the writing app from the text the author wrote, with the author able to correct it; never from the interface language or a profile preference alone. A hint for readers, not a guarantee: consumers must not hide a record because it lacks this field."
+          },
+          "location": {
+            "ref": "com.atproto.repo.strongRef",
+            "type": "ref",
+            "description": "A strong reference to the organization's primary location: where it is based, and where it is shown when a map displays one point per organization. The referenced record must conform with the lexicon app.certified.location. Because a strong reference pins a specific version (CID) of that record, update this reference whenever the location record is edited. Further locations go in additionalLocations."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this record was originally created."
+          },
+          "legalName": {
+            "type": "string",
+            "maxLength": 2560,
+            "description": "The organization's registered legal name. The public-facing name belongs in app.certified.actor.profile displayName.",
+            "maxGraphemes": 256
+          },
+          "signatures": {
+            "ref": "app.certified.signature.defs#list",
+            "type": "ref",
+            "description": "Optional cryptographic signatures attesting to this record's content."
+          },
+          "visibility": {
+            "type": "string",
+            "description": "Controls whether the organization or project is publicly discoverable on platforms that honor this setting.",
+            "knownValues": [
+              "public",
+              "unlisted"
+            ]
+          },
+          "foundedDate": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the organization was established. Stored as datetime per ATProto conventions (no date-only format exists). Clients should use midnight UTC (e.g., '2005-01-01T00:00:00.000Z'); consumers should treat only the date portion as canonical."
+          },
+          "publicEmail": {
+            "type": "string",
+            "maxLength": 254,
+            "description": "A contact email address the organization wants shown publicly (e.g. 'hello@example.org'). Records are public, so never put a personal or internal address here."
+          },
+          "longDescription": {
+            "refs": [
+              "org.hypercerts.defs#descriptionString",
+              "pub.leaflet.pages.linearDocument",
+              "com.atproto.repo.strongRef"
+            ],
+            "type": "union",
+            "description": "Long-form description of the organization, such as its mission, history, or detailed project narrative. An inline string for plain text or markdown, a Leaflet linear document record embedded directly, or a strong reference to an existing document record."
+          },
+          "organizationType": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 128,
+              "maxGraphemes": 100
+            },
+            "maxLength": 10,
+            "description": "Legal or operational structures of the organization (e.g. 'nonprofit', 'ngo', 'government', 'social-enterprise', 'cooperative')."
+          },
+          "additionalLocations": {
+            "type": "array",
+            "items": {
+              "ref": "com.atproto.repo.strongRef",
+              "type": "ref"
+            },
+            "maxLength": 1000,
+            "description": "Strong references to further locations where the organization operates, such as branches, outlets, or field offices. Excludes the primary location, which is in location; do not repeat it here. Each referenced record must conform with the lexicon app.certified.location. As with location, update a reference whenever its record is edited."
+          }
+        }
+      },
+      "description": "Extended metadata for an organization actor. Complements the base actor profile (app.certified.actor.profile), which holds the display name, description, website, avatar, and banner, with organization-specific fields such as legal name, full logo, public contact email, legal structure, reference links, and locations."
+    },
+    "urlItem": {
+      "type": "object",
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 10000,
+          "description": "The URL.",
+          "maxGraphemes": 2048
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 640,
+          "description": "Optional human-readable label for this URL (e.g. 'Donation page').",
+          "maxGraphemes": 64
+        }
+      },
+      "description": "A labeled URL reference."
+    }
+  },
+  "lexicon": 1
+}

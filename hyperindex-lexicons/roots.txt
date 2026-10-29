@@ -1,0 +1,32 @@
+# Record collections Hyperindex should index. One NSID per line.
+# build.sh adds everything these reference, so list only the collections you want.
+
+app.gainforest.feed.post
+app.gainforest.feed.like
+app.gainforest.feed.repost
+app.gainforest.dwc.occurrence
+app.gainforest.dwc.dataset
+app.gainforest.dwc.event
+app.gainforest.dwc.measurement
+app.gainforest.ac.deployment
+app.gainforest.ac.multimedia
+app.gainforest.ac.audio
+app.gainforest.organization.layer
+app.gainforest.organization.defaultSite
+app.gainforest.organization.member
+app.gainforest.link.evm
+app.gainforest.funding.config
+
+org.hypercerts.claim.activity
+org.hypercerts.collection
+org.hypercerts.funding.receipt
+org.hypercerts.context.attachment
+org.hypercerts.context.evaluation
+
+app.certified.actor.profile
+app.certified.actor.organization
+app.certified.location
+app.certified.badge.definition
+app.certified.badge.award
+app.certified.graph.follow
+app.certified.link.evm

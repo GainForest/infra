@@ -1,0 +1,141 @@
+{
+  "id": "org.hypercerts.funding.receipt",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "to",
+          "createdAt"
+        ],
+        "properties": {
+          "to": {
+            "refs": [
+              "#text",
+              "app.certified.defs#did",
+              "com.atproto.repo.strongRef"
+            ],
+            "type": "union",
+            "description": "The recipient of the funds (a free-text string, an account DID, or a strong reference to a record)."
+          },
+          "for": {
+            "ref": "com.atproto.repo.strongRef",
+            "type": "ref",
+            "description": "Optional strong reference to the activity, project, or organization this funding relates to."
+          },
+          "via": {
+            "refs": [
+              "#text",
+              "app.certified.defs#did",
+              "com.atproto.repo.strongRef"
+            ],
+            "type": "union",
+            "description": "Optional intermediary that facilitated or processed the payment (funding platform, payment servicer, broker)."
+          },
+          "from": {
+            "refs": [
+              "#text",
+              "app.certified.defs#did",
+              "com.atproto.repo.strongRef"
+            ],
+            "type": "union",
+            "description": "The sender of the funds (a free-text string, an account DID, or a strong reference to a record). Optional — omit to represent anonymity. Name a sender only if they chose to be named: from can be added later by updating the receipt in place, but removing it later only hides the name from the current version, and an onchain transactionId still names the sending wallet."
+          },
+          "type": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "What the payment is: a donation (a gift from the sender), a match (funds a matching pool allocated on the strength of other gifts) or a grant (funds awarded through a selection process). Values beyond the known set are permitted. Omit if unknown.",
+            "knownValues": [
+              "donation",
+              "match",
+              "grant"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Optional notes or additional context for this funding receipt."
+          },
+          "amount": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Gross amount the sender paid, before fees, as a numeric string (e.g. '1000.50'). Omit if unknown, and set netAmount instead."
+          },
+          "currency": {
+            "type": "string",
+            "maxLength": 10,
+            "description": "Currency of amount: an ISO 4217 code for fiat (e.g. EUR), a token ticker for digital assets (e.g. USDC). This is what marks the funds as fiat or digital. Set it whenever amount is set."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this receipt record was created."
+          },
+          "netAmount": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "What the recipient received after fees and conversion, as a numeric string in netCurrency."
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Timestamp when the payment occurred."
+          },
+          "signatures": {
+            "ref": "app.certified.signature.defs#list",
+            "type": "ref",
+            "description": "Optional cryptographic signatures attesting to this record's content."
+          },
+          "netCurrency": {
+            "type": "string",
+            "maxLength": 10,
+            "description": "Currency of netAmount: an ISO 4217 code for fiat, a token ticker for digital assets. Set it whenever netAmount is set."
+          },
+          "paymentRail": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "How the sender paid. Use 'payment_processor' only when the underlying method is unknown.",
+            "knownValues": [
+              "onchain",
+              "bank_transfer",
+              "card",
+              "direct_debit",
+              "mobile_money",
+              "payment_processor",
+              "cash",
+              "check"
+            ]
+          },
+          "transactionId": {
+            "type": "string",
+            "maxLength": 256,
+            "description": "ID of the sender's payment, not of a platform's later payout: a transaction hash for onchain payments, otherwise the processor's or scheme's reference. Receipts are public: prefer opaque processor IDs to bank references, and note that a hash reveals the sender's wallet even when from is omitted."
+          },
+          "paymentNetwork": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Where transactionId can be looked up: the chain for onchain payments, preferably as a CAIP-2 ID (e.g. 'eip155:1'), otherwise the processor or scheme (e.g. stripe, sepa). Set it whenever transactionId is a transaction hash."
+          }
+        }
+      },
+      "description": "Records a payment from a sender to a recipient. Any party may record it, and the sender may stay anonymous. When the sender chose the recipient, record one receipt to the final recipient even if platforms or hosts passed the funds on. When an intermediary chose (regranting), record the payment into it and each onward payment as separate receipts. A receipt may be updated in place under the same record key: its URI does not change, so references by URI keep resolving, but a strongRef (as likes and reposts use) still pins the earlier CID, and signatures bind to content and must be renewed. An earlier version cannot be recalled from readers that kept it."
+    },
+    "text": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "maxLength": 2048,
+          "description": "The string value."
+        }
+      },
+      "description": "A free-text string value (e.g. a display name, wallet address, or other identifier)."
+    }
+  },
+  "lexicon": 1
+}

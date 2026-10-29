@@ -1,0 +1,77 @@
+{
+  "id": "app.certified.actor.profile",
+  "defs": {
+    "main": {
+      "key": "literal:self",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "createdAt"
+        ],
+        "properties": {
+          "langs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "language"
+            },
+            "maxLength": 3,
+            "description": "Human language(s) of this record's text fields, as BCP-47 language tags (e.g. 'es', 'pt-BR'); up to three for mixed-language text. Set by the writing app from the text the author wrote, with the author able to correct it; never from the interface language or a profile preference alone. A hint for readers, not a guarantee: consumers must not hide a record because it lacks this field."
+          },
+          "avatar": {
+            "refs": [
+              "org.hypercerts.defs#uri",
+              "org.hypercerts.defs#smallImage"
+            ],
+            "type": "union",
+            "description": "Small image to be displayed next to posts from account. AKA, 'profile picture'. Clients crop it to a square or circle, so an organization should use its brandmark (the symbol without the name); the full logo belongs in app.certified.actor.organization logo."
+          },
+          "banner": {
+            "refs": [
+              "org.hypercerts.defs#uri",
+              "org.hypercerts.defs#largeImage"
+            ],
+            "type": "union",
+            "description": "Larger horizontal image to display behind profile view."
+          },
+          "website": {
+            "type": "string",
+            "format": "uri",
+            "description": "Account website URL"
+          },
+          "pronouns": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Free-form pronouns text.",
+            "maxGraphemes": 20
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this record was originally created"
+          },
+          "signatures": {
+            "ref": "app.certified.signature.defs#list",
+            "type": "ref",
+            "description": "Optional cryptographic signatures attesting to this record's content."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2560,
+            "description": "Free-form profile description text.",
+            "maxGraphemes": 256
+          },
+          "displayName": {
+            "type": "string",
+            "maxLength": 640,
+            "description": "Display name for the account. For an organization, the public-facing name it uses in communications; a different registered legal name belongs in app.certified.actor.organization legalName.",
+            "maxGraphemes": 64
+          }
+        }
+      },
+      "description": "A declaration of a Certified account profile."
+    }
+  },
+  "lexicon": 1
+}

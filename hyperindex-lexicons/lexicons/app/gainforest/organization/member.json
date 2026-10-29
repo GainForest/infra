@@ -1,0 +1,140 @@
+{
+  "id": "app.gainforest.organization.member",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "displayName",
+          "role",
+          "did",
+          "createdAt"
+        ],
+        "properties": {
+          "bio": {
+            "ref": "app.gainforest.common.defs#richtext",
+            "type": "ref",
+            "description": "Biography of the member"
+          },
+          "did": {
+            "type": "string",
+            "format": "did",
+            "description": "ATProto DID if the member has their own account"
+          },
+          "role": {
+            "type": "string",
+            "description": "Role or title of the member within the organization",
+            "maxGraphemes": 128
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact email address of the member",
+            "maxGraphemes": 256
+          },
+          "orcid": {
+            "type": "string",
+            "description": "ORCID identifier of the member",
+            "maxGraphemes": 64
+          },
+          "isPublic": {
+            "type": "boolean",
+            "description": "Whether this member profile is publicly visible"
+          },
+          "joinedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the member joined the organization"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name of the member",
+            "maxGraphemes": 128
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "The date and time the record was created"
+          },
+          "expertise": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxGraphemes": 128
+            },
+            "maxLength": 10,
+            "description": "Areas of expertise (e.g. 'botany', 'remote sensing', 'community engagement')"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "First name of the member",
+            "maxGraphemes": 128
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxGraphemes": 32
+            },
+            "maxLength": 10,
+            "description": "Languages spoken by the member as BCP-47 codes"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Full display name of the member",
+            "maxGraphemes": 256
+          },
+          "displayOrder": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Ordering priority for display (lower values appear first)"
+          },
+          "profileImage": {
+            "ref": "org.hypercerts.defs#smallImage",
+            "type": "ref",
+            "description": "Profile photo of the member"
+          },
+          "walletAddresses": {
+            "type": "array",
+            "items": {
+              "ref": "#walletAddress",
+              "type": "ref"
+            },
+            "maxLength": 5,
+            "description": "Blockchain wallet addresses for receiving funds"
+          }
+        }
+      },
+      "description": "A community or team member of an organization"
+    },
+    "walletAddress": {
+      "type": "object",
+      "required": [
+        "chain",
+        "address"
+      ],
+      "properties": {
+        "chain": {
+          "type": "string",
+          "description": "The blockchain network for this wallet address",
+          "knownValues": [
+            "celo",
+            "solana",
+            "ethereum",
+            "polygon",
+            "other"
+          ],
+          "maxGraphemes": 32
+        },
+        "address": {
+          "type": "string",
+          "description": "The wallet address on the specified chain",
+          "maxGraphemes": 256
+        }
+      },
+      "description": "A blockchain wallet address for receiving funds"
+    }
+  },
+  "lexicon": 1
+}

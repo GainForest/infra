@@ -1,0 +1,514 @@
+{
+  "id": "app.gainforest.common.defs",
+  "defs": {
+    "uri": {
+      "type": "object",
+      "required": [
+        "uri"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "URI to external resource",
+          "maxGraphemes": 1024
+        }
+      },
+      "description": "Reference to external data via URI"
+    },
+    "audio": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "audio/wav",
+            "audio/x-wav",
+            "audio/mpeg",
+            "audio/mp3",
+            "audio/mp4",
+            "audio/x-m4a",
+            "audio/aac",
+            "audio/flac",
+            "audio/x-flac",
+            "audio/ogg",
+            "audio/opus",
+            "audio/webm",
+            "audio/aiff",
+            "audio/x-aiff"
+          ],
+          "maxSize": 104857600,
+          "description": "Audio up to 100MB. Supports WAV, MP3, M4A, AAC, FLAC, OGG, Opus, WebM, AIFF."
+        }
+      },
+      "description": "Audio file for bioacoustics, soundscapes, field recordings, species calls"
+    },
+    "image": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+            "image/webp",
+            "image/heic",
+            "image/heif",
+            "image/tiff",
+            "image/tif",
+            "image/gif",
+            "image/bmp",
+            "image/svg+xml"
+          ],
+          "maxSize": 20971520,
+          "description": "Image up to 20MB. Supports JPEG, PNG, WebP, HEIC (phones), TIFF (scientific), GIF, BMP, SVG."
+        }
+      },
+      "description": "Image file for photos, camera traps, drone stills, scanned documents"
+    },
+    "video": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "video/mp4",
+            "video/quicktime",
+            "video/x-msvideo",
+            "video/webm",
+            "video/x-matroska",
+            "video/mpeg",
+            "video/3gpp",
+            "video/3gpp2"
+          ],
+          "maxSize": 104857600,
+          "description": "Video up to 100MB. Supports MP4, MOV, AVI, WebM, MKV, MPEG, 3GP."
+        }
+      },
+      "description": "Video file for camera traps, drone footage, underwater video, behavioral observations"
+    },
+    "dataFile": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "text/csv",
+            "text/tab-separated-values",
+            "application/json",
+            "application/ld+json",
+            "application/xml",
+            "text/xml",
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.oasis.opendocument.spreadsheet"
+          ],
+          "maxSize": 52428800,
+          "description": "Data file up to 50MB. Supports CSV, TSV, JSON, JSON-LD, XML, XLS, XLSX, ODS."
+        }
+      },
+      "description": "Structured data file for observations, measurements, exports"
+    },
+    "document": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "application/pdf",
+            "text/plain",
+            "text/markdown",
+            "text/html",
+            "application/rtf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          ],
+          "maxSize": 20971520,
+          "description": "Document up to 20MB. Supports PDF, TXT, Markdown, HTML, RTF, DOC, DOCX."
+        }
+      },
+      "description": "Document file for reports, field notes, permits, publications"
+    },
+    "gpsTrack": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "application/gpx+xml",
+            "application/vnd.google-earth.kml+xml",
+            "application/vnd.google-earth.kmz",
+            "application/geo+json",
+            "application/json"
+          ],
+          "maxSize": 10485760,
+          "description": "GPS track up to 10MB. Supports GPX, KML, KMZ, GeoJSON."
+        }
+      },
+      "description": "GPS track file for transects, survey routes, patrol paths"
+    },
+    "richtext": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text to be formatted",
+          "maxGraphemes": 10000
+        },
+        "facets": {
+          "type": "array",
+          "items": {
+            "ref": "app.bsky.richtext.facet",
+            "type": "ref"
+          }
+        }
+      },
+      "description": "An object that contains the text and an object that defins and enables richtext formatting on the text."
+    },
+    "dateRange": {
+      "type": "object",
+      "required": [
+        "startDate"
+      ],
+      "properties": {
+        "endDate": {
+          "type": "string",
+          "description": "ISO 8601 end date",
+          "maxGraphemes": 64
+        },
+        "startDate": {
+          "type": "string",
+          "description": "ISO 8601 start date",
+          "maxGraphemes": 64
+        }
+      },
+      "description": "A date range for temporal queries"
+    },
+    "geospatial": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "application/geo+json",
+            "application/json",
+            "application/vnd.google-earth.kml+xml",
+            "application/vnd.google-earth.kmz",
+            "application/geopackage+sqlite3",
+            "application/x-shapefile",
+            "application/zip",
+            "image/tiff",
+            "image/geotiff"
+          ],
+          "maxSize": 104857600,
+          "description": "Geospatial data up to 100MB. Supports GeoJSON, KML, KMZ, GeoPackage, Shapefile (zipped), GeoTIFF."
+        }
+      },
+      "description": "Geospatial data file for maps, boundaries, habitat layers"
+    },
+    "sensorData": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "text/csv",
+            "application/json",
+            "text/plain",
+            "application/x-netcdf",
+            "application/x-hdf5"
+          ],
+          "maxSize": 52428800,
+          "description": "Sensor data up to 50MB. Supports CSV, JSON, TXT, NetCDF, HDF5."
+        }
+      },
+      "description": "Sensor data file for environmental monitoring (temperature, humidity, light, etc.)"
+    },
+    "geneticData": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "text/x-fasta",
+            "application/x-fasta",
+            "text/x-fastq",
+            "application/x-fastq",
+            "text/plain",
+            "text/csv",
+            "application/json"
+          ],
+          "maxSize": 104857600,
+          "description": "Genetic data up to 100MB. Supports FASTA, FASTQ, CSV, JSON."
+        }
+      },
+      "description": "Genetic/genomic data file for eDNA, barcoding, sequencing results"
+    },
+    "spectrogram": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "image/png",
+            "image/jpeg",
+            "image/jpg",
+            "image/webp"
+          ],
+          "maxSize": 5242880,
+          "description": "Spectrogram image up to 5MB"
+        }
+      },
+      "description": "Spectrogram image - visual representation of audio frequency content"
+    },
+    "coordinatePair": {
+      "type": "object",
+      "required": [
+        "lat",
+        "lon"
+      ],
+      "properties": {
+        "lat": {
+          "type": "string",
+          "description": "Decimal latitude",
+          "maxGraphemes": 32
+        },
+        "lon": {
+          "type": "string",
+          "description": "Decimal longitude",
+          "maxGraphemes": 32
+        }
+      },
+      "description": "A simple lat/lon pair for lightweight location references"
+    },
+    "imageThumbnail": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "blob",
+          "accept": [
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+            "image/webp"
+          ],
+          "maxSize": 1048576,
+          "description": "Thumbnail image up to 1MB"
+        }
+      },
+      "description": "Small image for thumbnails and previews"
+    },
+    "speciesProfile": {
+      "type": "object",
+      "required": [
+        "scientificName"
+      ],
+      "properties": {
+        "genus": {
+          "type": "string",
+          "description": "Taxonomic genus",
+          "maxGraphemes": 128
+        },
+        "family": {
+          "type": "string",
+          "description": "Taxonomic family",
+          "maxGraphemes": 128
+        },
+        "kingdom": {
+          "type": "string",
+          "description": "Taxonomic kingdom",
+          "maxGraphemes": 128
+        },
+        "imageUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Representative species image URL",
+          "maxGraphemes": 512
+        },
+        "commonName": {
+          "type": "string",
+          "description": "Vernacular name of the species",
+          "maxGraphemes": 256
+        },
+        "gbifTaxonKey": {
+          "type": "string",
+          "description": "GBIF taxon key identifier",
+          "maxGraphemes": 64
+        },
+        "thumbnailUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Small thumbnail image URL",
+          "maxGraphemes": 512
+        },
+        "scientificName": {
+          "type": "string",
+          "description": "Scientific (Latin) name of the species",
+          "maxGraphemes": 512
+        },
+        "conservationStatus": {
+          "ref": "#conservationStatus",
+          "type": "ref",
+          "description": "Conservation status information for this species"
+        }
+      },
+      "description": "Display-ready species profile for UI rendering"
+    },
+    "externalReference": {
+      "type": "object",
+      "required": [
+        "system",
+        "identifier"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Direct URL to the record in the external system",
+          "maxGraphemes": 512
+        },
+        "system": {
+          "type": "string",
+          "description": "External system name",
+          "knownValues": [
+            "gbif",
+            "iucn",
+            "ncbi",
+            "bold",
+            "ebird",
+            "inaturalist",
+            "wdpa",
+            "restor",
+            "other"
+          ],
+          "maxGraphemes": 128
+        },
+        "identifier": {
+          "type": "string",
+          "description": "Identifier in the external system",
+          "maxGraphemes": 256
+        }
+      },
+      "description": "A reference to an external system or database"
+    },
+    "conservationStatus": {
+      "type": "object",
+      "properties": {
+        "iucnTaxonId": {
+          "type": "string",
+          "description": "IUCN taxon identifier",
+          "maxGraphemes": 32
+        },
+        "iucnCategory": {
+          "type": "string",
+          "description": "IUCN Red List category code",
+          "knownValues": [
+            "EX",
+            "EW",
+            "CR",
+            "EN",
+            "VU",
+            "NT",
+            "LC",
+            "DD",
+            "NE"
+          ],
+          "maxGraphemes": 16
+        },
+        "nativeStatus": {
+          "type": "string",
+          "description": "Native status of the species in the observed region",
+          "knownValues": [
+            "native",
+            "invasive",
+            "introduced",
+            "endemic",
+            "uncertain"
+          ],
+          "maxGraphemes": 32
+        },
+        "citesAppendix": {
+          "type": "string",
+          "description": "CITES appendix listing",
+          "knownValues": [
+            "I",
+            "II",
+            "III"
+          ],
+          "maxGraphemes": 8
+        },
+        "nationalStatus": {
+          "type": "string",
+          "description": "National or regional conservation status",
+          "maxGraphemes": 256
+        },
+        "iucnAssessmentDate": {
+          "type": "string",
+          "description": "Date of the IUCN assessment",
+          "maxGraphemes": 64
+        }
+      },
+      "description": "IUCN and other conservation status information for a species or population"
+    },
+    "indexedOrganization": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URI of the organization",
+          "maxGraphemes": 2048
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the organization",
+          "maxGraphemes": 256
+        }
+      },
+      "description": "Reference to an indexed organization"
+    }
+  },
+  "lexicon": 1,
+  "description": "Shared type definitions for biodiversity and environmental data collection"
+}

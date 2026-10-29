@@ -1,0 +1,24 @@
+{
+  "id": "pub.leaflet.blocks.page",
+  "defs": {
+    "main": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "display": {
+          "type": "string",
+          "knownValues": [
+            "full",
+            "compact"
+          ]
+        }
+      }
+    }
+  },
+  "lexicon": 1
+}
