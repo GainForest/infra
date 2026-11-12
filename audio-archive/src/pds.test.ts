@@ -1,6 +1,6 @@
 import { afterEach, test, mock } from "node:test";
 import assert from "node:assert/strict";
-import { createPdsClient } from "./pds.ts";
+import { createPdsClient, isAllowedHost } from "./pds.ts";
 import { json, stubFetch } from "./testing/stubs.ts";
 
 const OWNER = "did:plc:abcdefghijklmnopqrstuvwx";
@@ -193,4 +193,52 @@ test("a PDS host that is not on the allowlist is refused before any record reque
   const calls = stubPds("https://pds.other.org");
   await assert.rejects(createPdsClient(HOSTS).getRecord(URI, OWNER), /pds\.other\.org is not in AUDIO_ARCHIVE_PDS_HOSTS/);
   assert.deepEqual(calls.map((call) => new URL(call.url).host), ["plc.directory"]);
+});
+
+test("isAllowedHost matches exact entries only exactly", () => {
+  assert.equal(isAllowedHost("certified.one", ["certified.one"]), true);
+  assert.equal(isAllowedHost("pds.certified.one", ["certified.one"]), false);
+  assert.equal(isAllowedHost("xcertified.one", ["certified.one"]), false);
+});
+
+test("isAllowedHost matches a wildcard against subdomains at any depth", () => {
+  const hosts = ["*.host.bsky.network"];
+  assert.equal(isAllowedHost("hebeloma.us-west.host.bsky.network", hosts), true);
+  assert.equal(isAllowedHost("us-west.host.bsky.network", hosts), true);
+  assert.equal(isAllowedHost("a.b.c.host.bsky.network", hosts), true);
+});
+
+test("isAllowedHost rejects a wildcard's bare suffix and lookalike hosts", () => {
+  const hosts = ["*.host.bsky.network"];
+  assert.equal(isAllowedHost("host.bsky.network", hosts), false);
+  assert.equal(isAllowedHost("evilhost.bsky.network", hosts), false);
+  assert.equal(isAllowedHost("x.host.bsky.network.evil.com", hosts), false);
+});
+
+test("a PDS endpoint under a wildcard entry is read; a did:web under it is resolved", async () => {
+  const hosts = ["*.host.bsky.network"];
+  const calls = stubPds("https://hebeloma.us-west.host.bsky.network");
+  await createPdsClient(hosts).getRecord(URI, OWNER);
+  assert.equal(new URL(calls[1]!.url).host, "hebeloma.us-west.host.bsky.network");
+
+  mock.restoreAll();
+  const did = "did:web:alice.host.bsky.network";
+  const webCalls = stubFetch((url) =>
+    url.pathname === "/.well-known/did.json" ? json(didDoc("https://pds.host.bsky.network", did)) : json(RECORD),
+  );
+  await createPdsClient(hosts).getRecord(`at://${did}/app.gainforest.ac.audio/3krecord`, did);
+  assert.deepEqual(webCalls.map((call) => new URL(call.url).host), ["alice.host.bsky.network", "pds.host.bsky.network"]);
+});
+
+test("a wildcard entry does not loosen the https, port or bare-origin checks", async () => {
+  for (const [endpoint, reason] of [
+    ["http://a.host.bsky.network", /must use https/],
+    ["https://a.host.bsky.network:8443", /must not name a port/],
+    ["https://a.host.bsky.network/x", /bare origin/],
+    ["https://host.bsky.network", /not in AUDIO_ARCHIVE_PDS_HOSTS/],
+  ] as const) {
+    mock.restoreAll();
+    stubPds(endpoint);
+    await assert.rejects(createPdsClient(["*.host.bsky.network"]).getRecord(URI, OWNER), reason, endpoint);
+  }
 });
