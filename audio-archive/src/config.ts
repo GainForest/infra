@@ -12,7 +12,7 @@ export type Config = {
   source: BucketConfig;
   archive: BucketConfig;
   indexerUrl: string;
-  /** Hostnames whose PDS the runner may read ac.audio records from. */
+  /** Hostnames whose PDS the runner may read ac.audio records from; "*.suffix" entries match any subdomain. */
   pdsHosts: readonly string[];
   /** Loopback port held while a run is in progress; see lock.ts. */
   lockPort: number;
@@ -105,15 +105,18 @@ export function loadConfig(): Config {
   };
 }
 
-/** AUDIO_ARCHIVE_PDS_HOSTS: comma-separated hostnames, exact match. Unset means certified.one. */
+/**
+ * AUDIO_ARCHIVE_PDS_HOSTS: comma-separated hostnames, exact match, or "*.suffix"
+ * for any subdomain of suffix (not suffix itself). Unset means certified.one.
+ */
 function pdsHostsFromEnv(): readonly string[] {
   const raw = process.env.AUDIO_ARCHIVE_PDS_HOSTS?.trim();
   if (!raw) return DEFAULT_PDS_HOSTS;
   const hosts = raw.split(",").map((host) => host.trim().toLowerCase()).filter(Boolean);
-  const invalid = hosts.filter((host) => !HOSTNAME.test(host));
+  const invalid = hosts.filter((host) => !HOSTNAME.test(host.startsWith("*.") ? host.slice(2) : host));
   if (hosts.length === 0 || invalid.length > 0) {
     throw new Error(
-      `AUDIO_ARCHIVE_PDS_HOSTS must be a comma-separated list of hostnames, e.g. "certified.one,pds.example.org"${invalid.length ? `. Not a hostname: ${invalid.join(", ")}` : ""}.`,
+      `AUDIO_ARCHIVE_PDS_HOSTS must be a comma-separated list of hostnames or *.suffix wildcards, e.g. "certified.one,*.host.bsky.network"${invalid.length ? `. Not a hostname: ${invalid.join(", ")}` : ""}.`,
     );
   }
   return hosts;

@@ -154,3 +154,15 @@ test("a PDS host list with something that is not a hostname is refused", () => {
     assert.throws(() => loadConfig(), /AUDIO_ARCHIVE_PDS_HOSTS must be a comma-separated list of hostnames/, value);
   }
 });
+
+test("a PDS host list accepts *.suffix wildcards for a valid hostname suffix", () => {
+  process.env.AUDIO_ARCHIVE_PDS_HOSTS = "certified.one,gainforest.id,*.Host.bsky.network";
+  assert.deepEqual(loadConfig().pdsHosts, ["certified.one", "gainforest.id", "*.host.bsky.network"]);
+});
+
+test("a malformed PDS host wildcard is refused", () => {
+  for (const value of ["*.", "*", "**.x", "*.bad_host", "pds.*.org", "*example.org"]) {
+    process.env.AUDIO_ARCHIVE_PDS_HOSTS = value;
+    assert.throws(() => loadConfig(), /AUDIO_ARCHIVE_PDS_HOSTS must be a comma-separated list of hostnames or \*\.suffix wildcards/, value);
+  }
+});

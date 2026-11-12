@@ -147,7 +147,8 @@ organization's record for a larger file can never verify by CID either.
 The PDS lookups follow the owner DID and the service endpoint in its DID document,
 both of which come from public records. So the runner only contacts
 `plc.directory` and hosts on `AUDIO_ARCHIVE_PDS_HOSTS` (default `certified.one`,
-exact hostname match, like the BioBlitz archive):
+exact hostname match, like the BioBlitz archive; an entry `*.suffix` matches any
+subdomain of `suffix` at any depth, but not `suffix` itself):
 
 - a `did:web` DID's host must be on the list before its DID document is fetched;
 - the PDS a DID document names must be on the list, use `https`, and be a bare
@@ -169,7 +170,7 @@ are the same ones gainforest-app reads.
 | `DATA_JOBS_S3_ENDPOINT`, `_BUCKET`, `_ACCESS_KEY_ID`, `_SECRET_ACCESS_KEY` | required | Source (R2). `_REGION` defaults to `auto` |
 | `ARCHIVE_S3_ENDPOINT`, `_BUCKET`, `_ACCESS_KEY_ID`, `_SECRET_ACCESS_KEY` | required | Archive. On AWS also set `ARCHIVE_S3_REGION` (e.g. `eu-west-3`): the runner refuses an `amazonaws.com` endpoint with an empty or `auto` region |
 | `INDEXER_URL` | `https://api-hi.gainforest.app/graphql` | Where `ac.audio` records come from |
-| `AUDIO_ARCHIVE_PDS_HOSTS` | `certified.one` | Comma-separated PDS hostnames the runner may read record values from |
+| `AUDIO_ARCHIVE_PDS_HOSTS` | `certified.one` | Comma-separated PDS hostnames the runner may read record values from; `*.suffix` matches any subdomain. Deployment uses `certified.one,gainforest.id,*.host.bsky.network` |
 | `AUDIO_ARCHIVE_MIN_AGE_MINUTES` | `30` | Leave files younger than this for a later run. `0` turns the wait off |
 | `AUDIO_ARCHIVE_MAX_MBPS` | unlimited | Cap on transfer speed in **megabits** per second (`80` ≈ 10 MB/s). Paces the download and the upload together. It caps the average: parts still leave in 16 MiB bursts at full speed |
 | `AUDIO_ARCHIVE_LOCK_PORT` | `29437` | Loopback port used as the lock |

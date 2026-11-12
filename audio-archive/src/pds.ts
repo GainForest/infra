@@ -9,7 +9,7 @@ import { fetchLimited, ResponseTooLargeError, type LimitedResponse } from "./htt
  *
  * The runner only ever contacts plc.directory and hosts on an allowlist
  * (AUDIO_ARCHIVE_PDS_HOSTS, default certified.one, matching the BioBlitz
- * archive's BIOBLITZ_ARCHIVE_PDS_HOSTS): a did:web host must be on it before
+ * archive's BIOBLITZ_ARCHIVE_PDS_HOSTS; see isAllowedHost for wildcards): a did:web host must be on it before
  * its DID document is fetched, and so must the PDS the document names. Name
  * checks alone can't stop a public hostname that resolves to a private address.
  * Verifying a record against the uploader's DID does not need any of this;
@@ -76,6 +76,16 @@ export function createPdsClient(allowedHosts: readonly string[], signal?: AbortS
   };
 }
 
+/**
+ * Whether `host` (lowercase) is on the allowlist. An entry "*.suffix" matches any
+ * subdomain of suffix at any depth, but not suffix itself; a lookalike such as
+ * "evilsuffix" never matches because the match includes the leading dot. Other
+ * entries match exactly.
+ */
+export function isAllowedHost(host: string, allowedHosts: readonly string[]): boolean {
+  return allowedHosts.some((entry) => (entry.startsWith("*.") ? host.endsWith(entry.slice(1)) : host === entry));
+}
+
 function parseRecordUri(uri: string): { repo: string; collection: string; rkey: string } {
   const match = AT_URI.exec(uri);
   if (!match) throw new Error(`"${shorten(uri)}" is not an at://<did>/<collection>/<rkey> record URI`);
@@ -90,7 +100,7 @@ function didDocumentUrl(did: string, allowedHosts: readonly string[]): string {
   const web = DID_WEB.exec(did);
   if (!web) throw new Error(`"${shorten(did)}" is not a did:plc or a did:web with a plain hostname`);
   const host = web[1]!.toLowerCase();
-  if (!allowedHosts.includes(host)) throw new Error(`did:web host ${shorten(host)} is not in AUDIO_ARCHIVE_PDS_HOSTS`);
+  if (!isAllowedHost(host, allowedHosts)) throw new Error(`did:web host ${shorten(host)} is not in AUDIO_ARCHIVE_PDS_HOSTS`);
   return `https://${host}/.well-known/did.json`;
 }
 
@@ -131,7 +141,7 @@ function pdsOriginFrom(endpoint: unknown, allowedHosts: readonly string[]): stri
   if (url.username || url.password) throw new Error(`PDS endpoint for ${url.hostname} must not contain credentials`);
   if (url.port) throw new Error(`PDS endpoint for ${url.hostname} must not name a port`);
   if (url.pathname !== "/" || url.search || url.hash) throw new Error(`PDS endpoint for ${url.hostname} must be a bare origin`);
-  if (!allowedHosts.includes(url.hostname.toLowerCase())) {
+  if (!isAllowedHost(url.hostname.toLowerCase(), allowedHosts)) {
     throw new Error(`PDS host ${url.hostname} is not in AUDIO_ARCHIVE_PDS_HOSTS`);
   }
   return url.origin;
